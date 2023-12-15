@@ -1,0 +1,121 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+
+
+
+typedef struct linklist{
+
+    int val;
+    struct linklist *next;
+
+}linklist;
+
+linklist* creatlinklist(int n){
+    linklist *l = (linklist *)malloc(sizeof(linklist ));
+    l->next = NULL;
+
+    srand(time(NULL));
+    int i;
+
+    for(i=0 ; i<n ; i++){
+        linklist *p = (linklist *)malloc(sizeof(linklist ));
+        p->next = l->next;
+        l->next = p;
+        p->val = rand()%10+1;
+    }
+        return  l;
+}//创造整个listlink
+
+void putinvals(linklist **l , int n){
+
+    linklist *p = (linklist *)malloc(sizeof(linklist ));
+
+    int i = 0;
+    for(p = (*l)->next ; !(i == n) ; p = p->next){
+        srand(time(NULL));
+        i++;
+        if(i==n){
+            p->val = rand()%10+1;
+        }
+    }
+}//修改第n个节点的值
+
+void delelinklist(linklist **l ){
+    if((*l)->next ){
+        linklist *p = (linklist *)malloc(sizeof(linklist ));                  
+        p = (*l)->next;
+        (*l)->next = p->next;
+        free(p);
+        }
+}//删除整个listlink
+
+void putinplinklist(linklist **l , int n){
+    linklist *p;
+    p = (linklist *)malloc(sizeof(linklist ));
+    linklist *q;
+    q = (linklist *)malloc(sizeof(linklist ));
+    p = (*l)->next;
+    int i = 0;
+    if(!(i==n)){
+        i++;
+        if(i == n){
+            q->val = rand()%10+1;
+            q->next = p->next;
+            p->next = q;
+        }
+        p = p->next;
+    }
+}//在第n个节点后面插入一个节点
+
+void deleplinklist(linklist **l , int n){
+    linklist *p;
+    p = (linklist *)malloc(sizeof(linklist ));
+    linklist *q;
+    q = (linklist *)malloc(sizeof(linklist ));
+
+    int i = 0;
+    p = (*l)->next;
+    q = p->next;
+
+    for(i = 1 ; !(i==n+1) ; i++){
+        if(i==n){
+            p->next = q->next;
+            free(q);
+        }
+        else{
+        p = q;
+        q = q->next; 
+        }
+
+    }
+
+}//删除第n个节点后面一个节点
+
+int main(void){
+    linklist *l = (linklist *)malloc(sizeof(linklist ));
+    l = creatlinklist(10);
+    linklist *p = (linklist *)malloc(sizeof(linklist ));
+    int i;
+    for(p = l->next ; p ; p = p->next){
+        printf("%d\n",p->val);
+    }
+putchar('\n');
+    putinvals(&l , 1);
+    for(p = l->next ; p ; p = p->next){
+        printf("%d\n",p->val);
+    }
+putchar('\n');
+    putinplinklist(&l , 3);
+    for(p = l->next ; p ; p = p->next){
+        printf("%d\n",p->val);
+    }
+putchar('\n');
+    deleplinklist(&l,4);
+    for(p = l->next ; p ; p = p->next){
+        printf("%d\n",p->val);
+    }
+
+
+    return  0;
+}
